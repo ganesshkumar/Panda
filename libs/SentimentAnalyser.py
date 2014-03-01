@@ -1,6 +1,7 @@
 import sys
 import urllib,urllib2
 import json
+import unicodedata
 
 
 class SentimentAnalyser:
@@ -16,7 +17,11 @@ class SentimentAnalyser:
 	sentiment_response = response.read()
 	json_sent = json.loads(sentiment_response)
 	sentiment = json_sent['result']['sentiment']
+	confidence = json_sent['result']['confidence']
+	print text
 	print sentiment
+	print confidence
+	
         return sentiment
 
 
@@ -25,7 +30,7 @@ class SentimentAnalyser:
        negative=0 
        neutral=0
        for text in details:
-          dict = self.get_text_sentiment(text)
+          dict = self.get_text_sentiment(unicodedata.normalize('NFKD', text).encode('ascii','ignore'))
           if dict == 'Positive':
              positive += 1
           elif dict == 'Negative':	

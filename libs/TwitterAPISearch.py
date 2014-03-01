@@ -38,7 +38,7 @@ class TwitterAPISearch:
                     if chk not in var and chk[:10] not in var:
                         print chk
                         var=var+chk+"||"
-                        tweetList.append(var.strip())
+                        tweetList.append(tweet['text'].strip())
                         cnt=cnt+1
                 else:
                     break
