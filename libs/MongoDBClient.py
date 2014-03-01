@@ -26,12 +26,17 @@ class MongoDBClient:
                 'neutral': 0
             },
             'amzn_rating': 0.0,
-            'flip_rating': {
+            'flip_senti': {
                 'positive': 0,
                 'negative': 0,
                 'neutral': 0
             },
             'flip_rating': 0.0,
+            'twitter_senti': {
+                'positive': 0,
+                'negative': 0,
+                'neutral': 0
+            },
             'twitter_tags': [],
             'lastUpdated': datetime.now()
         }
