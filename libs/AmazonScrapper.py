@@ -8,6 +8,11 @@ class AmazonScrapper:
         self.soup = BeautifulSoup(self.html)
         self.number_of_pages = self.get_number_of_pages()
 
+    def get_ratings(self):
+        '''get rating information'''
+        rating = self.soup.find('span',{"class":"swSprite s_star_4_5 "})
+        return rating.get_text().split(' ')[0]	
+
     def get_number_of_pages(self):
         '''get paging information'''
         pages = self.soup.find('div',{"class":"CMpaginate"})
