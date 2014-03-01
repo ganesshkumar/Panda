@@ -1,3 +1,4 @@
+import md5
 import urllib2,sys
 from bs4 import BeautifulSoup, NavigableString
 
@@ -23,21 +24,30 @@ class AmazonScrapper:
     def get_review_titles(self, soup):
         '''get single line reviews'''
         reviews = soup.find_all('span',{"style":"vertical-align:middle;"})
-        return [x.find('b').get_text() for x in reviews]
+        return [x.find('b').get_text() for x in reviews ]
 
-    def get_detail_reviews(self, soup):
+    def get_detail_reviews(self, soup, md5):
         '''get detailed reviews'''
+        details = []
         table = soup.find('table',{"id":"productReviews"})
         divs = table.find_all('div',{"class":"reviewText"})
-        return [x.get_text() for x in divs]
+        for x in divs:
+            if md5.new(x.get_text()).hexdigest() == md5:
+                break
+            details.append(x.get_text())
+        return details
 
-    def get_all_reviews(self):
+    def get_all_reviews(self, md5):
         titles = []
         details = []
         for i in xrange(1, self.number_of_pages+1):
             soup = BeautifulSoup(urllib2.urlopen(self.url+str(i)).read())
+            details.extend(self.get_detail_reviews(soup, md5))
             titles.extend(self.get_review_titles(soup))
-            details.extend(self.get_detail_reviews(soup))
-        return {'titles': titles, 'details', details ,'rating': self.get_ratings()}
+            if len(details)%10 is not 0:
+                titles = titles[:len(details)]
+                break
+
+        return {'titles': titles, 'details', details ,'rating': self.get_ratings(), 'md5': md5.new(details[0]).hexdigest()}
 
 
