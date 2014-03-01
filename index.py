@@ -1,4 +1,4 @@
-import os, sys
+import os, sys, time
 from flask import Flask, render_template, url_for, request, jsonify
 
 sys.path.append('libs')
@@ -19,6 +19,13 @@ def search():
         return jsonify(result="ITEM_NOT_FOUND")
     else:
         panda = Panda()
-        res = panda.process(item)
-        return jsonify(result='res')
+        print search_term
+        return jsonify(
+            title=item['title'],
+            amzn_senti=item['amzn_senti'],
+            flip_senti=item['flip_senti'],
+            amzn_rating=item['amzn_rating'],
+            flip_rating=item['flip_rating'],
+            twitter_senti=item['twitter_senti'],
+        )
 

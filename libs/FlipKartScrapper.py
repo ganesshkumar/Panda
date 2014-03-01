@@ -12,7 +12,7 @@ class FlipKartScrapper:
         print product_pageURL
         self.product_page=urllib2.urlopen(product_pageURL)
         self.product_data=BeautifulSoup(self.product_page.read())
-        print self.product_data
+        #print self.product_data
         self.review_pageURL=review_pageURL
 
     def get_review_count(self):
@@ -40,7 +40,7 @@ class FlipKartScrapper:
             for review in review_data.findAll("p",{'class':'line bmargin10'}):
 
                 newHash = unicodedata.normalize('NFKD', review.get_text().strip()).encode('ascii','ignore')
-                print md5.new(newHash).hexdigest()
+                #print md5.new(newHash).hexdigest()
                 if md5.new(newHash).hexdigest() == latestMD5:
                     flag=1
                     break
