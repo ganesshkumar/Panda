@@ -8,7 +8,6 @@ class AmazonScrapper:
         self.html = urllib2.urlopen(url_first_page+'1').read()
         self.soup = BeautifulSoup(self.html)
         self.number_of_pages = int(self.get_number_of_pages())
-        self.ti
 
     def get_ratings(self):
         '''get rating information'''
@@ -26,28 +25,28 @@ class AmazonScrapper:
         reviews = soup.find_all('span',{"style":"vertical-align:middle;"})
         return [x.find('b').get_text() for x in reviews ]
 
-    def get_detail_reviews(self, soup, md5):
+    def get_detail_reviews(self, soup, hash_md5):
         '''get detailed reviews'''
         details = []
         table = soup.find('table',{"id":"productReviews"})
         divs = table.find_all('div',{"class":"reviewText"})
         for x in divs:
-            if md5.new(x.get_text()).hexdigest() == md5:
+            if md5.new(x.get_text()).hexdigest() == hash_md5:
                 break
             details.append(x.get_text())
         return details
 
-    def get_all_reviews(self, md5):
+    def get_all_reviews(self, hash_md5):
         titles = []
         details = []
         for i in xrange(1, self.number_of_pages+1):
             soup = BeautifulSoup(urllib2.urlopen(self.url+str(i)).read())
-            details.extend(self.get_detail_reviews(soup, md5))
+            details.extend(self.get_detail_reviews(soup, hash_md5))
             titles.extend(self.get_review_titles(soup))
-            if len(details)%10 is not 0:
+            if len(titles) is not len(details):
                 titles = titles[:len(details)]
                 break
 
-        return {'titles': titles, 'details', details ,'rating': self.get_ratings(), 'md5': md5.new(details[0]).hexdigest()}
+        return {'titles': titles, 'details': details ,'rating': self.get_ratings(), 'md5': md5.new(details[0]).hexdigest()}
 
 
