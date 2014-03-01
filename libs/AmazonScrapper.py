@@ -1,4 +1,5 @@
 import md5
+import unicodedata
 import urllib2,sys
 from bs4 import BeautifulSoup, NavigableString
 
@@ -31,7 +32,9 @@ class AmazonScrapper:
         table = soup.find('table',{"id":"productReviews"})
         divs = table.find_all('div',{"class":"reviewText"})
         for x in divs:
-            if md5.new(x.get_text()).hexdigest() == hash_md5:
+            text = x.get_text()
+            text = unicodedata.normalize('NFKD', text).encode('ascii','ignore')
+            if md5.new(text).hexdigest() == hash_md5:
                 break
             details.append(x.get_text())
         return details

@@ -12,6 +12,7 @@ class FlipKartScrapper:
         print product_pageURL
         self.product_page=urllib2.urlopen(product_pageURL)
         self.product_data=BeautifulSoup(self.product_page.read())
+        print self.product_data
         self.review_pageURL=review_pageURL
 
     def get_review_count(self):
@@ -22,7 +23,6 @@ class FlipKartScrapper:
         RatingUserCount=self.product_data.find("span",{'itemprop':'ratingCount'}).get_text()
         Rating=self.product_data.find("div",{'class':'pp-big-star'}).get_text()
         return Rating
-
 
     def get_review_data(self,latestMD5):
         flag = 0

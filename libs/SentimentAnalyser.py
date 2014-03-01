@@ -1,17 +1,18 @@
 import sys
-sys.path.append('libs')
-from DatumBox import DatumBox
+
+#from DatumBox import DatumBox
 from alchemyapi import AlchemyAPI
+
 alchemy=AlchemyAPI()
-datum_box=DatumBox('f78c469c6bb22ee40677b30738d69538')
+#datum_box=DatumBox('f78c469c6bb22ee40677b30738d69538')
 
 
 class SentimentAnalyser:
 
    def __init__(self):
        pass
-	
-   def get_text_sentiment(self,text):
+
+   def get_text_sentiment(self, text):
        dict = alchemy.sentiment('text',text)
        if 'docSentiment' in dict:
           return dict['docSentiment']	
@@ -45,7 +46,7 @@ class SentimentAnalyser:
              positive += 1
           elif result == 'negative':
              negatvie += 1
-          else 
+          else:
              neutral += 1
        return {'positive':positive, 'negative':negative, 'neutral':neutral} 
 
