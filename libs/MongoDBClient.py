@@ -20,22 +20,24 @@ class MongoDBClient:
             'flip_url': '',
             'amzn_hash': '',
             'flip_hash': '',
-            'amzn_rating': {
+            'amzn_senti': {
                 'positive': 0,
                 'negative': 0,
                 'neutral': 0
             },
+            'amzn_rating': 0.0,
             'flip_rating': {
                 'positive': 0,
                 'negative': 0,
                 'neutral': 0
             },
+            'flip_rating': 0.0,
             'twitter_tags': [],
             'lastUpdated': datetime.now()
         }
         return dict
 
-    def insert(self, title):
+    def get(self, title):
         return self.reviews.find_one({'title_ws': ''.join(e for e in title if e.isalnum()).lower()})
 
     def save(self, data):
@@ -48,3 +50,7 @@ class MongoDBClient:
             return "Post added successfully"
         except errors.DuplicateKeyError:
             return  "Post already added"
+
+if __name__ == "__main__":
+    client = MongoDBClient()
+    print client.get('Moto U')
