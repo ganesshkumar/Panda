@@ -11,7 +11,7 @@ class AmazonScrapper:
 
     def get_ratings(self):
         '''get rating information'''
-        rating = self.soup.find('span',{"class":"swSprite s_star_4_5 "})
+        rating = self.soup.find('span',{"class":"swSprite"})
         return rating.get_text().split(' ')[0]
 
     def get_number_of_pages(self):
@@ -46,7 +46,8 @@ class AmazonScrapper:
             if len(titles) is not len(details):
                 titles = titles[:len(details)]
                 break
-
-        return {'titles': titles, 'details': details ,'rating': self.get_ratings(), 'md5': md5.new(details[0]).hexdigest()}
+        if len(details) is not 0:
+            hash_md5 = md5.new(details[0]).hexdigest()
+        return {'titles': titles, 'details': details ,'rating': self.get_ratings(), 'md5': hash_md5}
 
 
