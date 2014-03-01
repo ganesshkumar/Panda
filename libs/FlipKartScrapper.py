@@ -56,7 +56,8 @@ class FlipKartScrapper:
             pageNum=pageNum+10
 
         if len(flipkart_review) != 0:
-            sendMD5=md5.new(flipkart_review[0]).hexdigest()
+            newHash = unicodedata.normalize('NFKD', flipkart_review[0]).encode('ascii','ignore')
+            sendMD5 = md5.new(newHash).hexdigest()
         else:
             sendMD5=latestMD5
 
