@@ -22,5 +22,3 @@ def search():
         res = panda.process(item)
         return jsonify(result='res')
 
-if __name__ == '__main__':
-    app.run()
