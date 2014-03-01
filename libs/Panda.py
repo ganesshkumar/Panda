@@ -21,16 +21,6 @@ class Panda:
         amazon_reviews = amazon.get_all_reviews(item['amzn_hash'])
         print ('Amazon reviews retrived')
         amazon_analysis = analyser.get_sentiments(amazon_reviews['titles'])
-<<<<<<< HEAD
-        print ('Amazon Analysis Done')
-        #flipkart_reviews = flipkart.get_review_data(item['flip_hash'])
-        #print ('Flipkart reviews retrived')
-        #flipkart_analysis = analyser.get_sentiments(flipkart_reviews['titles'])
-        #print ('Flipkart Analysis Done')
-        item['amzn_senti'] = self.add_senti(item['amzn_senti'], amazon_analysis)
-        item['amzn_hash'] = amazon_reviews['md5']
-        item['amzn_rating'] = amazon_reviews['rating']
-=======
 	print amazon_analysis
         print ('Amazon Analysis Done')
         flipkart_reviews = flipkart.get_review_data('flip_hash')
@@ -38,21 +28,20 @@ class Panda:
         flipkart_analysis = analyser.get_sentiments(flipkart_reviews['titles'])
 	print flipkart_analysis
         print ('Flipkart Analysis Done')
-        #item['amzn_senti'] = self.add_senti(item['amzn_senti'], amazon_analysis)
-        #item['amzn_hash'] = amazon_reviews['md5']
-        #item['amzn_rating'] = amazon_reviews['rating']
->>>>>>> 30df1abb3a60d5d84a6fc3f8149b280a3bee24af
+        item['amzn_senti'] = self.add_senti(item['amzn_senti'], amazon_analysis)
+        item['amzn_hash'] = amazon_reviews['md5']
+        item['amzn_rating'] = amazon_reviews['rating']
 
-        #item['flip_senti'] = self.add_senti(item['flip_senti'], flipkart_analysis)
-        #item['flip_hash'] = amazon_reviews['md5']
-        #item['flip_rating'] = amazon_reviews['rating']
+        item['flip_senti'] = self.add_senti(item['flip_senti'], flipkart_analysis)
+        item['flip_hash'] = amazon_reviews['md5']
+        item['flip_rating'] = amazon_reviews['rating']
         
         Panda.db_client.save(item);
 
         return {'amzn_senti': item['amzn_senti'],
-                'amzn_rating': item['amzn_rating']
-        #        'flip_senti': item['flip_senti'],
-        #        'flip_rating': item['flip_rating'],
+                'amzn_rating': item['amzn_rating'],
+                'flip_senti': item['flip_senti'],
+                'flip_rating': item['flip_rating'],
                }
 
 
