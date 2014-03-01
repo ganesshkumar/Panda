@@ -7,6 +7,7 @@ class AmazonScrapper:
         self.html = urllib2.urlopen(url_first_page+'1').read()
         self.soup = BeautifulSoup(self.html)
         self.number_of_pages = int(self.get_number_of_pages())
+        self.ti
 
     def get_ratings(self):
         '''get rating information'''
@@ -30,17 +31,13 @@ class AmazonScrapper:
         divs = table.find_all('div',{"class":"reviewText"})
         return [x.get_text() for x in divs]
 
-    def get_all_review_titles(self):
+    def get_all_reviews(self):
         titles = []
-        for i in xrange(1, self.number_of_pages+1):
-            soup = BeautifulSoup(urllib2.urlopen(self.url+str(i)).read())
-            titles.extend(self.get_review_titles(soup))
-        return titles
-
-    def get_all_detail_reviews(self):
         details = []
         for i in xrange(1, self.number_of_pages+1):
             soup = BeautifulSoup(urllib2.urlopen(self.url+str(i)).read())
+            titles.extend(self.get_review_titles(soup))
             details.extend(self.get_detail_reviews(soup))
-        return details
+        return {'titles': titles, 'details', details ,'rating': self.get_ratings()}
+
 
