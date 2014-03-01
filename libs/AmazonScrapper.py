@@ -6,12 +6,12 @@ class AmazonScrapper:
         self.url = url_first_page
         self.html = urllib2.urlopen(url_first_page+'1').read()
         self.soup = BeautifulSoup(self.html)
-        self.number_of_pages = self.get_number_of_pages()
+        self.number_of_pages = int(self.get_number_of_pages())
 
     def get_ratings(self):
         '''get rating information'''
         rating = self.soup.find('span',{"class":"swSprite s_star_4_5 "})
-        return rating.get_text().split(' ')[0]	
+        return rating.get_text().split(' ')[0]
 
     def get_number_of_pages(self):
         '''get paging information'''
@@ -28,17 +28,19 @@ class AmazonScrapper:
         '''get detailed reviews'''
         table = soup.find('table',{"id":"productReviews"})
         divs = table.find_all('div',{"class":"reviewText"})
-        return divs
+        return [x.get_text() for x in divs]
 
     def get_all_review_titles(self):
         titles = []
         for i in xrange(1, self.number_of_pages+1):
-            soup = BeautifulSoup(self.url+str(i))
+            soup = BeautifulSoup(urllib2.urlopen(self.url+str(i)).read())
             titles.extend(self.get_review_titles(soup))
+        return titles
 
     def get_all_detail_reviews(self):
         details = []
         for i in xrange(1, self.number_of_pages+1):
-            soup = BeautifulSoup(self.url+str(i))
-            details.extend(self.get_review_titles(soup))
+            soup = BeautifulSoup(urllib2.urlopen(self.url+str(i)).read())
+            details.extend(self.get_detail_reviews(soup))
+        return details
 
