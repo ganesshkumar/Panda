@@ -12,8 +12,10 @@ class SentimentAnalyser:
 	
    def get_text_sentiment(self,text):
        dict = alchemy.sentiment('text',text)
-       return dict['docSentiment']	
-
+       if 'docSentiment' in dict:
+          return dict['docSentiment']	
+       else:
+          return {'type':'invalid'}
 
    def get_sentiments(self,details):
        positive=0
