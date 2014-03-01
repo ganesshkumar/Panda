@@ -20,7 +20,11 @@ def search():
     else:
         panda = Panda()
         res = panda.process(item)
+<<<<<<< HEAD
         return jsonify(result='res')
+=======
+        return jsonify(result=res)
+>>>>>>> 0e04daf8cb1773cab90d484d61be2f081600259c
 
 if __name__ == '__main__':
     app.run()
