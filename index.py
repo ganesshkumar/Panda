@@ -1,6 +1,7 @@
-import os
+import os, sys
 from flask import Flask
 
+sys.path.append('libs')
 app = Flask(__name__)
 
 @app.route('/')
