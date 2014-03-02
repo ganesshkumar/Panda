@@ -30,7 +30,11 @@ class SentimentAnalyser:
        negative=0 
        neutral=0
        for text in details:
-          dict = self.get_text_sentiment(unicodedata.normalize('NFKD', text).encode('ascii','ignore'))
+          #print text
+	  #print type(text)
+	  if type(text) == 'unicode': 
+	     text = unicodedata.normalize('NFKD', text).encode('ascii','ignore')
+	  dict = self.get_text_sentiment(text)
           if dict == 'Positive':
              positive += 1
           elif dict == 'Negative':	
