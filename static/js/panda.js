@@ -13,6 +13,7 @@ search = function() {
             window.analysis = data;
             set_highchart(data);
             set_barchart(data);
+            set_datechart(data);
         }
     });
 }
@@ -20,12 +21,12 @@ search = function() {
 var opts = {
   lines: 9, // The number of lines to draw
   length: 27, // The length of each line
-  width: 3, // The line thickness
+  width: 5, // The line thickness
   radius: 25, // The radius of the inner circle
   corners: 1, // Corner roundness (0..1)
   rotate: 0, // The rotation offset
   direction: 1, // 1: clockwise, -1: counterclockwise
-  color: '#ff0000', // #rgb or #rrggbb or array of colors
+  color: 'rgba(52, 152, 219,1.0)', // #rgb or #rrggbb or array of colors
   speed: 0.9, // Rounds per second
   trail: 40, // Afterglow percentage
   shadow: false, // Whether to render a shadow
@@ -48,14 +49,14 @@ set_highchart = function(data) {
         chart: {
             plotBackgroundColor: null,
             plotBorderWidth: null,
-            plotShadow: false
+            plotShadow: false,
         },
         title: {
             text: 'Amazon'
         },
         tooltip: {
             pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>',
-            yDecimals: 2
+            yDecimals: 2,
         },
         plotOptions: {
             pie: {
@@ -77,15 +78,15 @@ set_highchart = function(data) {
             data: [
                 { name: 'Positive', 
                   y: positive_percent,
-                  color: '#00ff00',
+                  color: '#2ecc71',
                 },
                 { name: 'Negative', 
                   y: negative_percent,
-                  color: '#ff0000',
+                  color: '#e74c3c',
                 },
                 { name: 'Neutral', 
                   y: neutral_percent,
-                  color: '#666666',
+                  color: '#95a5a6',
                 },
             ]
         }]
@@ -130,15 +131,15 @@ set_highchart = function(data) {
             data: [
                 { name: 'Positive', 
                   y: positive_percent,
-                  color: '#00ff00',
+                  color: '#2ecc71',
                 },
                 { name: 'Negative', 
                   y: negative_percent,
-                  color: '#ff0000',
+                  color: '#e74c3c',
                 },
                 { name: 'Neutral', 
                   y: neutral_percent,
-                  color: '#666666',
+                  color: '#95a5a6',
                 },
             ]
         }]
@@ -183,15 +184,15 @@ set_highchart = function(data) {
             data: [
                 { name: 'Positive', 
                   y: positive_percent,
-                  color: '#00ff00',
+                  color: '#2ecc71',
                 },
                 { name: 'Negative', 
                   y: negative_percent,
-                  color: '#ff0000',
+                  color: '#e74c3c',
                 },
                 { name: 'Neutral', 
                   y: neutral_percent,
-                  color: '#666666',
+                  color: '#95a5a6',
                 },
             ]
         }]
@@ -199,6 +200,26 @@ set_highchart = function(data) {
 }
 
 set_barchart = function(data) {
+
+    positive = []
+    negative = []
+    neutral = []
+
+    positive.push(data.display.positive)
+    positive.push(data.battery.positive)
+    positive.push(data.ram.positive)
+    positive.push(data.storage.positive)
+
+    negative.push(data.display.negative)
+    negative.push(data.battery.negative)
+    negative.push(data.ram.negative)
+    negative.push(data.storage.negative)
+
+    neutral.push(data.display.neutral)
+    neutral.push(data.battery.neutral)
+    neutral.push(data.ram.neutral)
+    neutral.push(data.storage.neutral)
+
     $('#features-bar').highcharts({
         chart: {
         type: 'column'
@@ -254,13 +275,56 @@ set_barchart = function(data) {
         },
         series: [{
             name: 'Positive',
-            data: [5, 3, 4, 7]
+            data: positive,
         }, {
             name: 'Neutral',
-            data: [2, 2, 3, 2]
+            data: neutral,
         }, {
             name: 'Negative',
-            data: [3, 4, 4, 2]
+            data: negative,
         }]
     });
+}
+
+set_datechart = function(data) {
+        $('#date-bar').highcharts({
+            title: {
+                text: 'Periodic sentiments',
+                x: -20 //center
+            },
+            subtitle: {
+                text: 'Twitter.com',
+                x: -20
+            },
+            xAxis: {
+                categories: data.dates
+            },
+            yAxis: {
+                title: {
+                    text: 'Number'
+                },
+                plotLines: [{
+                    value: 0,
+                    width: 1,
+                    color: '#808080'
+                }]
+            },
+            legend: {
+                layout: 'vertical',
+                align: 'right',
+                verticalAlign: 'middle',
+                borderWidth: 0
+            },
+            series: [{
+                name: 'Positive',
+                data: data.dates_pos
+            }, {
+                name: 'Negative',
+                data: data.dates_neg
+            }, {
+                name: 'Neutral',
+                data: data.dates_neu
+            }]
+        });
+
 }

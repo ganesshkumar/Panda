@@ -2,3 +2,47 @@
     width: 33%;
     float: left;
 }
+
+.chart {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.panda {
+    color: rgba(52, 152, 219,1.0);
+    font-family: 'Kaushan Script', cursive;
+    font-size: 3em;
+    text-align: center;
+}
+
+.spinner {
+    text-align: center;
+    width: 150px;
+    margin: auto;
+}
+
+.search-bar {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 2em;
+    align: center;
+    line-height: 3em;
+    height: 50px;
+    width: 400px;
+}
+
+.search-button {
+    font-family: 'Montserrat', sans-serif;
+    background-color: rgba(52, 152, 219,1.0);
+    color: #ffffff;
+    align: center;
+    display:inline-block;
+    cursor:pointer;
+    font-family:arial;
+    font-size:20px;
+    padding:20px 31px 10px 31px;
+    text-decoration:none;
+    text-shadow:0px 0px 0px #fff200;
+}
+.search-button:hover {
+    background-color: rgba(52, 152, 219,0.5);
+}

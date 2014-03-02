@@ -11,31 +11,40 @@
   <script src="{{ url_for('static', filename='js/panda.js') }}"></script>
   <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
   <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/panda.css')}}">
+  <link href='http://fonts.googleapis.com/css?family=Kaushan+Script' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
 </head>
 <body>
   <div>
-    <h1> Panda </h1>
+    <h1 class="panda"> Panda </h1>
   </div>
   <div>
-    <input id='search' type="text"/>
-    <input type="button" value="Search" class="btn" onclick="search()"/>
+    <div style="text-align:center; width=500px; margin-bottom: 30px;">
+      <input id='search' class="search-bar" type="text"/>
+      <input type="button" value="Search" class="search-button" onclick="search()"/>
+    </div>
   </div>
-  <div id='load' class="spinner"></div>
+  <div>
+    <div id='load' class="spinner"></div>
+  </div>
   <div id='not-found' style="display:none">
     <h1>We don't support this item yet. Request us to add this soon</h1>
   </div>
-  <div class="container">
+  <div class="container chart">
     <div id='amzn-pie'></div>
   </div>
-  <div class="container">
+  <div class="container chart">
     <div id='flip-pie'></div>
   </div>
-  <div class="container">
+  <div class="container chart">
     <div id='twitter-pie'></div>
   </div>
   <br style="clear:both;"/>
   <div>
-    <div id='features-bar'></div>
+    <div id='features-bar' class="chart"></div>
+  </div>
+  <div>
+    <div id='date-bar' class="chart"></div>
   </div>
 </body>
 </html>

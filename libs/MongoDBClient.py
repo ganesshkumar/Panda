@@ -38,7 +38,29 @@ class MongoDBClient:
                 'neutral': 0
             },
             'twitter_tags': [],
-            'lastUpdated': datetime.now()
+            'feature_rating': {
+                'battery': {
+                    'positive': 0,
+                    'negative': 0,
+                    'neutral': 0
+                },
+                'display': {
+                    'positive': 0,
+                    'negative': 0,
+                    'neutral': 0
+                },
+                'ram': {
+                    'positive': 0,
+                    'negative': 0,
+                    'neutral': 0
+                },
+                'storage': {
+                    'positive': 0,
+                    'negative': 0,
+                    'neutral': 0
+                }, 
+            },
+            'lastUpdated': datetime.now(),
         }
         return dict
 
