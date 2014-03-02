@@ -26,10 +26,12 @@ class FlipKartScrapper:
 
     def get_review_data(self,latestMD5):
         flag = 0
+        monthDict={'January':1,'February':2,'March':3,'April':4,'May':5,'June':6,'July':7,'August':8,'September':9,'October':10,'November':11,'December':12}
         review_count=self.get_review_count();
         print review_count
         flipkart_review = []
         flipkart_review_header = []
+        flipkart_review_date = []
         pageNum=0
         while int(pageNum) < int(review_count) and flag == 0:
             print pageNum
@@ -52,8 +54,18 @@ class FlipKartScrapper:
                     break
                 flipkart_review_header.append(reviewHead.get_text().strip())
 
+            for reviewDate in review_data.findAll("div",{'class':'date line fk-font-small'}):
+                if len(flipkart_review) == len(flipkart_review_date):
+                    break
+                month=monthDict[reviewDate.get_text().strip().split(' ')[1]]
+                flipkart_review_date.append(reviewDate.get_text().strip().split(' ')[0]+'-'+str(month)+'-20'+reviewDate.get_text().strip().split(' ')[2])
+
                 #print "--------------------------------------------------------------------"
             pageNum=pageNum+10
+
+        print len(flipkart_review)
+        print len(flipkart_review_header)
+        print len(flipkart_review_date)
 
         if len(flipkart_review) != 0:
             newHash = unicodedata.normalize('NFKD', flipkart_review[0]).encode('ascii','ignore')
@@ -61,7 +73,7 @@ class FlipKartScrapper:
         else:
             sendMD5=latestMD5
 
-        return {'titles': flipkart_review_header, 'details': flipkart_review ,'rating': self.get_Rating(), 'md5':sendMD5}
+        return {'titles': flipkart_review_header, 'details': flipkart_review ,'rating': self.get_Rating(), 'md5':sendMD5, 'date': flipkart_review_date}
 
 '''
 alch=AlchemyAPI()
