@@ -5,6 +5,7 @@ from bs4 import BeautifulSoup
 import urllib2
 import md5
 import unicodedata
+import time
 
 class FlipKartScrapper:
 
@@ -58,7 +59,12 @@ class FlipKartScrapper:
                 if len(flipkart_review) == len(flipkart_review_date):
                     break
                 month=monthDict[reviewDate.get_text().strip().split(' ')[1]]
-                flipkart_review_date.append(reviewDate.get_text().strip().split(' ')[0]+'-'+str(month)+'-20'+reviewDate.get_text().strip().split(' ')[2])
+                revDate=reviewDate.get_text().strip().split(' ')[0]+'-'+str(month)+'-20'+reviewDate.get_text().strip().split(' ')[2]
+
+                format = '%d-%m-%Y'
+                revDate_epoch=time.mktime(time.strptime(revDate, format))
+
+                flipkart_review_date.append(revDate_epoch)
 
                 #print "--------------------------------------------------------------------"
             pageNum=pageNum+10
