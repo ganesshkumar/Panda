@@ -41,15 +41,18 @@ class Panda:
         
         Panda.db_client.save(item);
         twitter = TwitterAPISearch()
-        tweets = twitter.tweetSearch(item['title'], 100)
+        tweets = twitter.twitterSearch(item['title'], 100)
         print 'Done with Twitter scrapping'
         twitter_reviews = analyser.get_sentiments(tweets)
 
         item['twitter_senti'] = self.add_senti(item['twitter_senti'], twitter_reviews)
-
+        print 'Done with twitter senti'
         fn_extractor = FunctionExtractor()
-        item['feature_rating'] = fn_extractor.calculate_features(flipkart_reviews, amazon_reviews, twitter_reviews)
-
+        feature_rating = fn_extractor.calculate_features(flipkart_reviews, amazon_reviews, twitter_reviews)
+        
+        if len(feature_rating) is 0:
+            feature_rating = item['feature_rating']
+            
         date=flipkart_reviews['date'] + amazon_reviews['dates']
         senti=flipkart_analysis['senti_list'] + amazon_analysis['senti_list']
         date_senti = {}
@@ -66,7 +69,7 @@ class Panda:
         cnet = CNETScrapper()
         cnet.get_CNET_rating()
 
-
+        Panda.db_client.save(item);
         return {'amzn_senti': item['amzn_senti'],
                 'amzn_rating': item['amzn_rating'],
                 'flip_senti': item['flip_senti'],
