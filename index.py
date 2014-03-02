@@ -19,6 +19,7 @@ def search():
         return jsonify(result="ITEM_NOT_FOUND")
     else:
         panda = Panda()
+        test = panda.process(item)
         dates = []
         pos = []
         neg = []
