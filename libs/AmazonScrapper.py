@@ -2,6 +2,7 @@ import md5
 import unicodedata
 import urllib2,sys
 from bs4 import BeautifulSoup, NavigableString
+import time
 
 class AmazonScrapper:
     def __init__(self, url_first_page):
@@ -24,7 +25,8 @@ class AmazonScrapper:
           day =  dat.split(' ')[1].split(',')[0]
 	  year = dat.split(',')[1].split(' ')[1]
 	  month = monthDict[str(dat.split(' ')[0])]
-          dates.append(day+'-'+str(month)+'-'+year)
+          format = '%d-%m-%Y'
+	  dates.append(time.mktime(time.strptime(day+'-'+str(month)+'-'+year,format)))
 	return dates
      
 
