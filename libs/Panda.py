@@ -26,7 +26,7 @@ class Panda:
         amazon_analysis = analyser.get_sentiments(amazon_reviews['titles'])
         print amazon_analysis
         print ('Amazon Analysis Done')
-        flipkart_reviews = flipkart.get_review_data('flip_hash')
+        flipkart_reviews = flipkart.get_review_data(item['flip_hash'])
         print ('Flipkart reviews retrived')
         flipkart_analysis = analyser.get_sentiments(flipkart_reviews['titles'])
         print flipkart_analysis
@@ -36,8 +36,8 @@ class Panda:
         item['amzn_rating'] = amazon_reviews['rating']
 
         item['flip_senti'] = self.add_senti(item['flip_senti'], flipkart_analysis)
-        item['flip_hash'] = amazon_reviews['md5']
-        item['flip_rating'] = amazon_reviews['rating']
+        item['flip_hash'] = flipkart_reviews['md5']
+        item['flip_rating'] = flipkart_reviews['rating']
         
         Panda.db_client.save(item);
         twitter = TwitterAPISearch()
