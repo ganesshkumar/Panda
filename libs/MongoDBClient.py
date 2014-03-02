@@ -80,4 +80,6 @@ class MongoDBClient:
 
 if __name__ == "__main__":
     client = MongoDBClient()
-    print client.get('Moto U')
+    item = MongoDBClient.get_empty_data()
+    # insert 
+    client.save(item)

@@ -2,7 +2,9 @@ from AmazonScrapper import AmazonScrapper
 from SentimentAnalyser import SentimentAnalyser
 from FlipKartScrapper import FlipKartScrapper
 from MongoDBClient import MongoDBClient
-
+from TwitterAPISearch import TwitterAPISearch
+from FunctionExtractor import FunctionExtractor
+from CNETScrapper import CNETScrapper
 
 class Panda:
     db_client = MongoDBClient()
@@ -38,6 +40,32 @@ class Panda:
         item['flip_rating'] = amazon_reviews['rating']
         
         Panda.db_client.save(item);
+        twitter = TwitterAPISearch()
+        tweets = twitter.tweetSearch(item['title'], 100)
+        print 'Done with Twitter scrapping'
+        twitter_reviews = analyser.get_sentiments(tweets)
+
+        item['twitter_senti'] = self.add_senti(item['twitter_senti'], twitter_reviews)
+
+        fn_extractor = FunctionExtractor()
+        item['feature_rating'] = fn_extractor.calculate_features(flipkart_reviews, amazon_reviews, twitter_reviews)
+
+        date=flipkart_reviews['date'] + amazon_reviews['dates']
+        senti=flipkart_analysis['senti_list'] + amazon_analysis['senti_list']
+        date_senti = {}
+
+        for iter in xrange(0,len(date)):
+            if date[iter] not in date_senti:
+                date_senti[date[iter]]={'Positive':0,'Negative':0,'Neutral':0}
+
+            date_senti[date[iter]][senti[iter]]= int(date_senti[date[iter]][senti[iter]]) + 1
+        print date_senti
+
+        item['date_rating'] = date_senti
+
+        cnet = CNETScrapper()
+        cnet.get_CNET_rating()
+
 
         return {'amzn_senti': item['amzn_senti'],
                 'amzn_rating': item['amzn_rating'],
