@@ -15,6 +15,19 @@ class AmazonScrapper:
         rating = self.soup.find('span',{"class":"swSprite"})
         return rating.get_text().split(' ')[0]
 
+    def get_dates(self,soup):
+        temp = soup.find_all('span',{"style":"vertical-align:middle;"})
+        monthDict={'January':1,'February':2,'March':3,'April':4,'May':5,'June':6,'July':7,'August':8,'September':9,'October':10,'November':11,'December':12}
+	dates=[]
+	for tem in temp:
+          dat = tem.find('nobr').get_text()
+          day =  dat.split(' ')[1].split(',')[0]
+	  year = dat.split(',')[1].split(' ')[1]
+	  month = monthDict[str(dat.split(' ')[0])]
+          dates.append(day+'-'+str(month)+'-'+year)
+	return dates
+     
+
     def get_number_of_pages(self):
         '''get paging information'''
         pages = self.soup.find('div',{"class":"CMpaginate"})
@@ -42,15 +55,18 @@ class AmazonScrapper:
     def get_all_reviews(self, hash_md5):
         titles = []
         details = []
-        for i in xrange(1, self.number_of_pages+1):
+        dates = []
+	for i in xrange(1, self.number_of_pages+1):
             soup = BeautifulSoup(urllib2.urlopen(self.url+str(i)).read())
             details.extend(self.get_detail_reviews(soup, hash_md5))
             titles.extend(self.get_review_titles(soup))
-            if len(titles) is not len(details):
+            dates.extend(self.get_dates(soup))
+	    if len(titles) is not len(details):
                 titles = titles[:len(details)]
+		dates = dates[:len(details)]
                 break
         if len(details) is not 0:
             hash_md5 = md5.new(details[0]).hexdigest()
-        return {'titles': titles, 'details': details ,'rating': self.get_ratings(), 'md5': hash_md5}
+        return {'titles': titles, 'details': details ,'rating': self.get_ratings(), 'md5': hash_md5, 'dates': dates}
 
 
